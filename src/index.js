@@ -1,18 +1,13 @@
 import { Hono } from "hono"
 import { cors } from "hono/cors"
 import { responseSuccess, responseFailed, responseError } from "./response"
-import { fetchStreamChat } from "./chat/fetchStreamChat"
 import { handleGithubCallback } from "./auth/handleGithubCallback"
 import { handleGetUser } from "./auth/handleGetUser"
 import { handleLogout } from "./auth/handleLogout"
-import { getChatById } from "./chat/getChatById"
-import { getChatsByUserId } from "./chat/getChatsByUserId"
-import { saveMessage } from "./message/saveMessage"
-import { getMessagesByChatId } from "./message/getMessagesByChatId"
 import { createUser } from "./auth/createUser"
 import { handleGoogleCallback } from "./auth/handleGoogleCallback"
-import { deleteChat } from "./chat/deleteChat"
 import { API_VERSION } from "./config/constant"
+import { fetchUsers } from "./users/fetchUsers"
 
 const app = new Hono()
 
@@ -55,27 +50,18 @@ apiRoutes.use(
 )
 
 // ~~~~~~ Chat ~~~~~~
-// Single chat operations
-apiRoutes.get("/chats/:id", getChatById)
-apiRoutes.delete("/chats/:id", deleteChat)
-apiRoutes.get("/chats", getChatsByUserId)
+// xSingle chat operations
+// apiRoutes.get("/chats/:id", getChatById)
+// apiRoutes.delete("/chats/:id", deleteChat)
+// apiRoutes.get("/chats", getChatsByUserId)
 
-// Chat stream
-apiRoutes.post("/chat/:id", fetchStreamChat)
-// apiRoutes.get("/chat/:id", async (c) => {
-// 	const data = await c.req.json()
-// 	return c.json({ message: "Received data", data })
-// })
-// , fetchStreamChat)
-
-// Chat messages operations
-apiRoutes.get("/chats/:id/messages", getMessagesByChatId)
-apiRoutes.post("/chats/:id/messages", saveMessage)
+// // Chat stream
+// apiRoutes.post("/chat/:id", fetchStreamChat)
 
 // ~~~~~~ Auth ~~~~~~
 apiRoutes.get("/auth/user", handleGetUser)
 apiRoutes.post("/auth/logout", handleLogout)
-apiRoutes.post("/messages", saveMessage)
+apiRoutes.post("/users", fetchUsers)
 
 // apiRoutes.get("/documents", getChatsByUserId)
 // apiRoutes.post("/documents", saveMessage)
