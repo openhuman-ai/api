@@ -28,14 +28,6 @@ app.get("/auth/callback/github", handleGithubCallback)
 app.get("/auth/callback/google", handleGoogleCallback)
 app.post("/auth/create", createUser)
 
-// Chat routes
-app.post("/chat", async (c) => {
-	if (!c.env.AI) {
-		return responseError(c, "No AI environment found", 404)
-	}
-	return fetchStreamChat(c)
-})
-
 // Document API routes
 const apiRoutes = new Hono()
 apiRoutes.use(
