@@ -6,7 +6,7 @@ import { handleGetUser } from "./auth/handleGetUser"
 import { handleLogout } from "./auth/handleLogout"
 import { createUser } from "./auth/createUser"
 import { handleGoogleCallback } from "./auth/handleGoogleCallback"
-import { API_VERSION } from "./config/constant"
+import { API_VERSION } from "./config/constants"
 import { fetchUsers } from "./users/fetchUsers"
 
 const app = new Hono()
@@ -62,13 +62,6 @@ apiRoutes.use(
 apiRoutes.get("/auth/user", handleGetUser)
 apiRoutes.post("/auth/logout", handleLogout)
 apiRoutes.post("/users", fetchUsers)
-
-// apiRoutes.get("/documents", getChatsByUserId)
-// apiRoutes.post("/documents", saveMessage)
-// apiRoutes.get("/documents/:id", getChatById)
-// apiRoutes.delete('/documents/:id', async (c) => {
-//   return responseSuccess(c, null, 'Document deleted successfully')
-// }
 
 app.route(`/api/${API_VERSION}`, apiRoutes)
 
