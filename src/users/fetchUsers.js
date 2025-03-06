@@ -2,16 +2,20 @@ import { responseError, responseFailed, responseSuccess } from "../response"
 
 export async function fetchUsers(c) {
 	try {
-		const response = await c.env.DB_OPENHUMAN.prepare("SELECT * FROM users").all()
-
-		if (!response.results) {
-			return responseFailed(null, "No users found", 404, corsHeaders)
+		const db = c.env.DB_OPENHUMAN
+		if (!db) {
+			return responseFailed(c, null, "Failed to connect to database", 400)
 		}
 
-		return responseSuccess(response.results, "Fetch users success", corsHeaders)
+		const { results } = await db.prepare("SELECT * FROM users").all()
+
+		if (!results || results.length === 0) {
+			return responseSuccess(c, [], "No users found")
+		}
+
+		return responseSuccess(c, results, "Fetch users success")
 	} catch (err) {
-		const errorMessage = err.message || "An unknown error occurred"
-		console.log("Exception", err)
-		return responseError(err, errorMessage, 401, corsHeaders)
+		console.error("Error getting messages:", error)
+		return responseFailed(c, null, "Failed to get messages", 500)
 	}
 }

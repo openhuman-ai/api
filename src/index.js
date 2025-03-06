@@ -25,7 +25,6 @@ app.use(
 // Auth routes
 app.get("/auth/callback/github", handleGithubCallback)
 app.get("/auth/callback/google", handleGoogleCallback)
-app.post("/auth/create", createUser)
 
 // Document API routes
 const apiRoutes = new Hono()
@@ -52,7 +51,8 @@ apiRoutes.use(
 // ~~~~~~ Auth ~~~~~~
 apiRoutes.get("/auth/user", handleGetUser)
 apiRoutes.post("/auth/logout", handleLogout)
-apiRoutes.post("/users", fetchUsers)
+
+apiRoutes.get("/users", fetchUsers)
 
 app.route(`/api/${API_VERSION}`, apiRoutes)
 
